@@ -25,7 +25,6 @@
   "dependencies": {
     "gsap": "^3.9.1",
     "lenis": "^1.0.45",
-    "split-type": "^0.3.4",
-    "swiper": "^11.0.6"
+    "split-type": "^0.3.4"
   }
 }
