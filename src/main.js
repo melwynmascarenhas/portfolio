@@ -1,6 +1,9 @@
 /* eslint-disable */
-import gsap from 'gsap'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import SplitType from 'split-type'
 
+gsap.registerPlugin(ScrollTrigger)
 const preloaderTL = gsap.timeline()
 
 let heroTitle
@@ -157,8 +160,8 @@ sectionHeadings.forEach((heading) => {
     filter: 'blur(0px)',
     scrollTrigger: {
       trigger: heading,
-      start: 'top 95%',
-      end: 'bottom 80%',
+      start: 'top 90%',
+      end: 'bottom 70%',
       scrub: true,
     },
   })
