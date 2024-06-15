@@ -1,14 +1,41 @@
 /* eslint-disable */
+import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Flip } from 'gsap/Flip'
 import SplitType from 'split-type'
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, Flip)
 const preloaderTL = gsap.timeline()
+document.body.style.overflow = 'hidden'
 
 let heroTitle
 let splitText
 let heroSub
+
+//GSAP Start
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+})
+
+lenis.on('scroll', (e) => {
+  console.log(e)
+})
+
+lenis.on('scroll', ScrollTrigger.update)
+
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000)
+})
+
+gsap.ticker.lagSmoothing(0)
+//GSAP End
+
+function enableScrolling() {
+  // Enable scrolling after the delay
+  document.body.style.overflowY = 'auto'
+}
 
 function runSplit() {
   heroTitle = new SplitType('.hero__heading', { types: 'chars' })
@@ -32,8 +59,42 @@ window.addEventListener('resize', () => {
   }
 })
 
+preloaderTL
+  .to('.preloader > *', {
+    yPercent: -100,
+    stagger: {
+      amount: 0.4,
+      from: 'random',
+    },
+    delay: 3,
+    duration: 0.85,
+    ease: 'power4.inOut',
+  })
+  .from(
+    heroTitle.chars,
+    {
+      opacity: 0,
+      filter: 'blur(60px)',
+      y: 50,
+      duration: 0.75,
+      stagger: 0.075,
+      ease: 'sine.out',
+      onComplete: enableScrolling,
+    },
+    '<1.25'
+  )
+  .from(heroSub.chars, {
+    opacity: 0,
+    duration: 0.000003,
+    stagger: {
+      each: 0.06,
+      from: 'start',
+    },
+  })
+//TIMELINE ENDS HERE
+
 //select the links to add hover event listener
-const links = document.querySelectorAll('.gallery__item')
+const links = document.querySelectorAll('[stagger-link-item]')
 links.forEach((link) => {
   //select the letters to add stagger
   //!select the letters in the current link not the document
@@ -61,43 +122,10 @@ links.forEach((link) => {
   })
 })
 
-preloaderTL
-  .to('.preloader > *', {
-    yPercent: -100,
-    stagger: {
-      amount: 0.4,
-      from: 'random',
-    },
-    delay: 3,
-    duration: 0.85,
-    ease: 'power4.inOut',
-  })
-  .from(
-    heroTitle.chars,
-    {
-      opacity: 0,
-      filter: 'blur(60px)',
-      y: 50,
-      duration: 0.75,
-      stagger: 0.075,
-      ease: 'sine.out',
-    },
-    '<1.25'
-  )
-  .from(heroSub.chars, {
-    opacity: 0,
-    duration: 0.000003,
-    stagger: {
-      each: 0.06,
-      from: 'start',
-    },
-  })
-//TIMELINE ENDS HERE
-
 //NAV LINKS FLIP code…
 let navLinks = document.querySelectorAll('.nav-link')
 let navCorners = document.querySelector('.nav-corners')
-let sectionEls = document.querySelectorAll('.section')
+let sectionEls = document.querySelectorAll('section')
 
 //removing active form all nav links and add to the actual active
 function updateActiveNavLink(targetId) {
