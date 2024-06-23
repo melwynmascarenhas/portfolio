@@ -125,7 +125,7 @@ links.forEach((link) => {
 //NAV LINKS FLIP code…
 let navLinks = document.querySelectorAll('.nav-link')
 let navCorners = document.querySelector('.nav-corners')
-let sectionEls = document.querySelectorAll('section')
+let sectionEls = document.querySelectorAll('.section')
 
 //removing active form all nav links and add to the actual active
 function updateActiveNavLink(targetId) {
