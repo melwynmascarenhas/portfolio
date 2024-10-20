@@ -12,6 +12,7 @@ document.body.style.overflow = 'hidden'
 let heroTitle
 let splitText
 let heroSub
+let typeSplit
 
 //GSAP Start
 const lenis = new Lenis({
@@ -42,9 +43,19 @@ function runSplit() {
   splitText = new SplitType('[stagger-link]', {
     types: 'words, chars',
   })
-  heroSub = new SplitType('.sub-text', {
+  heroSub = new SplitType('.hero__sub', {
     types: 'words, chars',
   })
+
+  typeSplit = new SplitType('.split-word', {
+    types: 'lines, words',
+  })
+  document.querySelectorAll('.word').forEach((word) => {
+    const lineMask = document.createElement('div')
+    lineMask.classList.add('line-mask')
+    word.appendChild(lineMask)
+  })
+  createAnimation()
 }
 runSplit()
 //on window resize remove split and re split
@@ -92,6 +103,24 @@ preloaderTL
     },
   })
 //TIMELINE ENDS HERE
+const hoverTarget = document.querySelectorAll('[hoverTarget]')
+
+hoverTarget.forEach((target) => {
+  target.addEventListener('mouseover', () => {
+    target.style.border = '1px solid #e6e6e6'
+    target.style.boxShadow =
+      '0px 1.245px 2.214px 0px rgba(255, 255, 255, 0.02), 0px 2.993px 5.32px 0px rgba(255, 255, 255, 0.03), 0px 5.635px 10.017px 0px rgba(255, 255, 255, 0.04), 0px 10.051px 17.869px 0px rgba(255, 255, 255, 0.04), 0px 18.8px 33.422px 0px rgba(255, 255, 255, 0.05), 0px 45px 80px 0px rgba(255, 255, 255, 0.07)'
+  })
+
+  target.addEventListener('mouseout', () => {
+    target.style.border = ''
+    target.style.boxShadow = ''
+  })
+})
+
+//CATEGORIES CARDS HOVER
+
+//
 
 //select the links to add hover event listener
 const links = document.querySelectorAll('[stagger-link-item]')
@@ -180,18 +209,37 @@ navLinks.forEach(function (link) {
   })
 })
 
-const sectionHeadings = document.querySelectorAll('.h1')
-sectionHeadings.forEach((heading) => {
-  gsap.set(heading, { autoAlpha: 0, filter: 'blur(40px)' })
-  gsap.to(heading, {
-    autoAlpha: 1,
-    filter: 'blur(0px)',
-    scrollTrigger: {
-      trigger: heading,
-      start: 'top 90%',
-      end: 'bottom 70%',
-      scrub: true,
-    },
+gsap.matchMedia().add('(min-width: 992px)', () => {
+  const sectionHeadings = document.querySelectorAll('.section-heading')
+  sectionHeadings.forEach((heading) => {
+    gsap.set(heading, { autoAlpha: 0, filter: 'blur(40px)' })
+    gsap.to(heading, {
+      autoAlpha: 1,
+      filter: 'blur(0px)',
+      scrollTrigger: {
+        trigger: heading,
+        start: 'top 85%',
+        end: 'bottom 70%',
+        scrub: true,
+      },
+    })
+  })
+})
+
+gsap.matchMedia().add('(max-width: 991px)', () => {
+  const sectionHeadings = document.querySelectorAll('.section-heading')
+  sectionHeadings.forEach((heading) => {
+    gsap.set(heading, { autoAlpha: 0, filter: 'blur(40px)' })
+    gsap.to(heading, {
+      autoAlpha: 1,
+      filter: 'blur(0px)',
+      scrollTrigger: {
+        trigger: heading,
+        start: 'top 90%',
+        end: 'bottom 75%',
+        scrub: true,
+      },
+    })
   })
 })
 
@@ -241,4 +289,41 @@ allLinks.forEach((link) => {
 document.addEventListener('mousemove', (e) => {
   cursor.style.left = e.pageX + 'px'
   cursor.style.top = e.pageY + 'px'
+})
+
+//word masks description section
+function createAnimation() {
+  const allMasks = Array.from(document.querySelectorAll('.word .line-mask'))
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.split-word',
+      start: 'top 60%',
+      end: 'bottom 60%',
+      scrub: 1,
+    },
+  })
+
+  tl.to(allMasks, {
+    width: '0%',
+    duration: 1,
+    stagger: 1,
+  })
+}
+
+//PROJ IMAGES PARALLAX
+const imagewrappers = document.querySelectorAll('.proj-img_wrap')
+
+imagewrappers.forEach((item) => {
+  let image = item.querySelector('.proj-img')
+  gsap.to(image, {
+    bottom: '-10%',
+    ease: 'power4.inOut',
+    scrollTrigger: {
+      trigger: item,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+      // markers: true,
+    },
+  })
 })
