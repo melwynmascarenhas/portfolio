@@ -14,29 +14,34 @@ let splitText
 let heroSub
 let typeSplit
 
-//GSAP Start
-const lenis = new Lenis({
-  duration: 1.2,
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-})
-
-lenis.on('scroll', (e) => {
-  console.log(e)
-})
-
-lenis.on('scroll', ScrollTrigger.update)
-
-gsap.ticker.add((time) => {
-  lenis.raf(time * 1000)
-})
-
-gsap.ticker.lagSmoothing(0)
-//GSAP End
+//LENIS SCROLL
+window.onload = function () {
+  document.body.style.overflow = 'hidden'
+}
 
 function enableScrolling() {
   // Enable scrolling after the delay
   document.body.style.overflowY = 'auto'
+
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  })
+
+  lenis.on('scroll', (e) => {
+    console.log(e)
+  })
+
+  lenis.on('scroll', ScrollTrigger.update)
+
+  gsap.ticker.add((time) => {
+    lenis.raf(time * 1000)
+  })
+
+  gsap.ticker.lagSmoothing(0)
 }
+
+//
 
 function runSplit() {
   heroTitle = new SplitType('.hero__heading', { types: 'chars' })
