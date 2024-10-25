@@ -63,10 +63,16 @@ function runSplit() {
   createAnimation()
 }
 runSplit()
+
 //on window resize remove split and re split
+let resizeTimer
 let windowWidth = window.innerWidth
 window.addEventListener('resize', () => {
   if (windowWidth !== window.innerWidth) {
+    clearTimeout(resizeTimer)
+    resizeTimer = setTimeout(() => {
+      location.reload()
+    }, 250)
     windowWidth = window.innerWidth
     heroTitle.revert()
     splitText.revert()
