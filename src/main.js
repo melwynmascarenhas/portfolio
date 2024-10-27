@@ -14,35 +14,6 @@ let splitText
 let heroSub
 let typeSplit
 
-//LENIS SCROLL
-window.onload = function () {
-  document.body.style.overflow = 'hidden'
-}
-
-function enableScrolling() {
-  // Enable scrolling after the delay
-  document.body.style.overflowY = 'auto'
-
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  })
-
-  lenis.on('scroll', (e) => {
-    console.log(e)
-  })
-
-  lenis.on('scroll', ScrollTrigger.update)
-
-  gsap.ticker.add((time) => {
-    lenis.raf(time * 1000)
-  })
-
-  gsap.ticker.lagSmoothing(0)
-}
-
-//
-
 function runSplit() {
   heroTitle = new SplitType('.hero__heading', { types: 'chars' })
   splitText = new SplitType('[stagger-link]', {
@@ -64,6 +35,77 @@ function runSplit() {
 }
 runSplit()
 
+let lenis
+function enableScrolling() {
+  // Enable scrolling after the delay
+  document.querySelector('.preloader').style.pointerEvents = 'none'
+  document.body.style.overflowY = 'auto'
+
+  lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  })
+
+  //LENIS SCROLL
+  lenis.on('scroll', (e) => {
+    console.log(e)
+  })
+
+  lenis.on('scroll', ScrollTrigger.update)
+
+  gsap.ticker.add((time) => {
+    lenis.raf(time * 1000)
+  })
+
+  gsap.ticker.lagSmoothing(0)
+}
+
+window.onload = function () {
+  if (window.location.hash) {
+    history.replaceState(null, null, window.location.pathname)
+  }
+
+  if (lenis) {
+    lenis.destroy
+  }
+
+  document.querySelector('.preloader').style.pointerEvents = 'auto'
+  document.body.style.overflow = 'hidden'
+
+  preloaderTL
+    .to('.preloader > *', {
+      yPercent: -100,
+      stagger: {
+        amount: 0.4,
+        from: 'random',
+      },
+      delay: 3,
+      duration: 0.85,
+      ease: 'power4.inOut',
+      onComplete: enableScrolling,
+    })
+    .from(
+      heroTitle.chars,
+      {
+        opacity: 0,
+        filter: 'blur(60px)',
+        y: 50,
+        duration: 0.75,
+        stagger: 0.075,
+        ease: 'sine.out',
+      },
+      '<1.25'
+    )
+    .from(heroSub.chars, {
+      opacity: 0,
+      duration: 0.000003,
+      stagger: {
+        each: 0.06,
+        from: 'start',
+      },
+    })
+}
+
 //on window resize remove split and re split
 let resizeTimer
 let windowWidth = window.innerWidth
@@ -81,38 +123,6 @@ window.addEventListener('resize', () => {
   }
 })
 
-preloaderTL
-  .to('.preloader > *', {
-    yPercent: -100,
-    stagger: {
-      amount: 0.4,
-      from: 'random',
-    },
-    delay: 3,
-    duration: 0.85,
-    ease: 'power4.inOut',
-  })
-  .from(
-    heroTitle.chars,
-    {
-      opacity: 0,
-      filter: 'blur(60px)',
-      y: 50,
-      duration: 0.75,
-      stagger: 0.075,
-      ease: 'sine.out',
-      onComplete: enableScrolling,
-    },
-    '<1.25'
-  )
-  .from(heroSub.chars, {
-    opacity: 0,
-    duration: 0.000003,
-    stagger: {
-      each: 0.06,
-      from: 'start',
-    },
-  })
 //TIMELINE ENDS HERE
 const hoverTarget = document.querySelectorAll('[hoverTarget]')
 
