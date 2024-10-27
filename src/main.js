@@ -6,13 +6,42 @@ import { Flip } from 'gsap/Flip'
 import SplitType from 'split-type'
 
 gsap.registerPlugin(ScrollTrigger, Flip)
-const preloaderTL = gsap.timeline()
-document.body.style.overflow = 'hidden'
+
+//LENIS
+const lenis = new Lenis({
+  duration: 1.2,
+  //easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+})
+lenis.on('scroll', ScrollTrigger.update)
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000)
+})
+gsap.ticker.lagSmoothing(0)
+//
 
 let heroTitle
 let splitText
 let heroSub
 let typeSplit
+
+//word masks description section
+function createAnimation() {
+  const allMasks = Array.from(document.querySelectorAll('.word .line-mask'))
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.split-word',
+      start: 'top 60%',
+      end: 'bottom 60%',
+      scrub: 1,
+    },
+  })
+
+  tl.to(allMasks, {
+    width: '0%',
+    duration: 1,
+    stagger: 1,
+  })
+}
 
 function runSplit() {
   heroTitle = new SplitType('.hero__heading', { types: 'chars' })
@@ -35,76 +64,40 @@ function runSplit() {
 }
 runSplit()
 
-let lenis
-function enableScrolling() {
-  // Enable scrolling after the delay
-  document.querySelector('.preloader').style.pointerEvents = 'none'
-  document.body.style.overflowY = 'auto'
-
-  lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+//TIMELINE STARTS HERE
+let preloaderTL = gsap.timeline()
+preloaderTL
+  .to('.preloader > *', {
+    yPercent: -100,
+    stagger: {
+      amount: 0.4,
+      from: 'random',
+    },
+    delay: 3,
+    duration: 0.85,
+    ease: 'power4.inOut',
   })
-
-  //LENIS SCROLL
-  lenis.on('scroll', (e) => {
-    console.log(e)
-  })
-
-  lenis.on('scroll', ScrollTrigger.update)
-
-  gsap.ticker.add((time) => {
-    lenis.raf(time * 1000)
-  })
-
-  gsap.ticker.lagSmoothing(0)
-}
-
-window.onload = function () {
-  if (window.location.hash) {
-    history.replaceState(null, null, window.location.pathname)
-  }
-
-  if (lenis) {
-    lenis.destroy
-  }
-
-  document.querySelector('.preloader').style.pointerEvents = 'auto'
-  document.body.style.overflow = 'hidden'
-
-  preloaderTL
-    .to('.preloader > *', {
-      yPercent: -100,
-      stagger: {
-        amount: 0.4,
-        from: 'random',
-      },
-      delay: 3,
-      duration: 0.85,
-      ease: 'power4.inOut',
-      onComplete: enableScrolling,
-    })
-    .from(
-      heroTitle.chars,
-      {
-        opacity: 0,
-        filter: 'blur(60px)',
-        y: 50,
-        duration: 0.75,
-        stagger: 0.075,
-        ease: 'sine.out',
-      },
-      '<1.25'
-    )
-    .from(heroSub.chars, {
+  .from(
+    heroTitle.chars,
+    {
       opacity: 0,
-      duration: 0.000003,
-      stagger: {
-        each: 0.06,
-        from: 'start',
-      },
-    })
-}
+      filter: 'blur(60px)',
+      y: 50,
+      duration: 0.75,
+      stagger: 0.075,
+      ease: 'sine.out',
+    },
+    '<1.25'
+  )
+  .from(heroSub.chars, {
+    opacity: 0,
+    duration: 0.000003,
+    stagger: {
+      each: 0.06,
+      from: 'start',
+    },
+  })
+//TIMELINE ENDS HERE
 
 //on window resize remove split and re split
 let resizeTimer
@@ -123,9 +116,7 @@ window.addEventListener('resize', () => {
   }
 })
 
-//TIMELINE ENDS HERE
 const hoverTarget = document.querySelectorAll('[hoverTarget]')
-
 hoverTarget.forEach((target) => {
   target.addEventListener('mouseover', () => {
     target.style.border = '1px solid #e6e6e6'
@@ -138,10 +129,6 @@ hoverTarget.forEach((target) => {
     target.style.boxShadow = ''
   })
 })
-
-//CATEGORIES CARDS HOVER
-
-//
 
 //select the links to add hover event listener
 const links = document.querySelectorAll('[stagger-link-item]')
@@ -160,7 +147,6 @@ links.forEach((link) => {
       overwrite: true,
     })
   })
-
   link.addEventListener('mouseleave', () => {
     gsap.to(letters, {
       yPercent: 0,
@@ -247,30 +233,12 @@ gsap.matchMedia().add('(min-width: 992px)', () => {
   })
 })
 
-gsap.matchMedia().add('(max-width: 991px)', () => {
-  const sectionHeadings = document.querySelectorAll('.section-heading')
-  sectionHeadings.forEach((heading) => {
-    gsap.set(heading, { autoAlpha: 0, filter: 'blur(40px)' })
-    gsap.to(heading, {
-      autoAlpha: 1,
-      filter: 'blur(0px)',
-      scrollTrigger: {
-        trigger: heading,
-        start: 'top 90%',
-        end: 'bottom 75%',
-        scrub: true,
-      },
-    })
-  })
-})
-
 const words = [
   'Building 3D…',
   'Loading 3D…',
   'Adding custom code…',
   'Adding new Webflow logo…',
 ]
-
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -312,28 +280,8 @@ document.addEventListener('mousemove', (e) => {
   cursor.style.top = e.pageY + 'px'
 })
 
-//word masks description section
-function createAnimation() {
-  const allMasks = Array.from(document.querySelectorAll('.word .line-mask'))
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: '.split-word',
-      start: 'top 60%',
-      end: 'bottom 60%',
-      scrub: 1,
-    },
-  })
-
-  tl.to(allMasks, {
-    width: '0%',
-    duration: 1,
-    stagger: 1,
-  })
-}
-
 //PROJ IMAGES PARALLAX
 const imagewrappers = document.querySelectorAll('.proj-img_wrap')
-
 imagewrappers.forEach((item) => {
   let image = item.querySelector('.proj-img')
   gsap.to(image, {
