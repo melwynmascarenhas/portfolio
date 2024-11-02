@@ -234,10 +234,10 @@ gsap.matchMedia().add('(min-width: 992px)', () => {
 })
 
 const words = [
-  'Building 3D…',
-  'Loading 3D…',
-  'Adding custom code…',
-  'Adding new Webflow logo…',
+  'Constructing 3D assets…',
+  'Rendering immersive scenes…',
+  'Integrating custom scripts…',
+  'Finalizing Webflow elements',
 ]
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
