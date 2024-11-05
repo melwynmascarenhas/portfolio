@@ -286,7 +286,7 @@ imagewrappers.forEach((item) => {
   let image = item.querySelector('.proj-img')
   gsap.to(image, {
     bottom: '-10%',
-    ease: 'power4.inOut',
+    ease: 'none',
     scrollTrigger: {
       trigger: item,
       start: 'top bottom',
