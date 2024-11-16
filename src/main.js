@@ -296,23 +296,3 @@ imagewrappers.forEach((item) => {
     },
   })
 })
-
-const horizontalSection = document.querySelector('.certifications')
-const wrapper = horizontalSection.querySelector('.wrapper')
-const items = wrapper.querySelectorAll('.item')
-//const heading = wrapper.querySelector('.certificate-heading')
-
-//horizontal scrolling effect
-let wrapperTween = gsap.to(wrapper, {
-  x: () => (wrapper.offsetWidth - window.innerWidth) * -1,
-  ease: 'none',
-  scrollTrigger: {
-    //markers: true,
-    trigger: horizontalSection,
-    pin: true,
-    start: 'top top',
-    end: () => `+=${items[0].offsetWidth * items.length}`,
-    scrub: 1,
-    invalidateOnRefresh: true, //recalculate the start and end points when window resize
-  },
-})
