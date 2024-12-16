@@ -159,8 +159,8 @@ links.forEach((link) => {
 })
 
 //NAV LINKS FLIP code…
-let navLinks = document.querySelectorAll('.nav-link')
-let navCorners = document.querySelector('.nav-corners')
+let navLinks = document.querySelectorAll('.nav_link')
+let navCorners = document.querySelector('.nav_corners')
 let sectionEls = document.querySelectorAll('[dest]')
 
 //removing active form all nav links and add to the actual active
@@ -185,7 +185,7 @@ function scrollNav() {
     updateActiveNavLink(activeSection)
     navCorners.style.visibility = 'visible'
     const state = Flip.getState(navCorners)
-    const activeLink = document.querySelector('.nav-link.is--active')
+    const activeLink = document.querySelector('.nav_link.is--active')
     activeLink.appendChild(navCorners)
     Flip.from(state, {
       duration: 0.1,
