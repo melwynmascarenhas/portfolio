@@ -29,7 +29,7 @@ function createAnimation() {
   const allMasks = Array.from(document.querySelectorAll('.word .line-mask'))
   const tl = gsap.timeline({
     scrollTrigger: {
-      trigger: '.split-word',
+      trigger: '.description_split-word',
       start: 'top 60%',
       end: 'bottom 60%',
       scrub: 1,
@@ -52,7 +52,7 @@ function runSplit() {
     types: 'words, chars',
   })
 
-  typeSplit = new SplitType('.split-word', {
+  typeSplit = new SplitType('.description_split-word', {
     types: 'lines, words',
   })
   document.querySelectorAll('.word').forEach((word) => {
