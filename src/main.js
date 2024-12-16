@@ -281,9 +281,9 @@ document.addEventListener('mousemove', (e) => {
 })
 
 //PROJ IMAGES PARALLAX
-const imagewrappers = document.querySelectorAll('.proj-img_wrap')
+const imagewrappers = document.querySelectorAll('.project_img-wrap')
 imagewrappers.forEach((item) => {
-  let image = item.querySelector('.proj-img')
+  let image = item.querySelector('.project_image')
   gsap.to(image, {
     bottom: '-10%',
     ease: 'none',
