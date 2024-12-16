@@ -44,11 +44,11 @@ function createAnimation() {
 }
 
 function runSplit() {
-  heroTitle = new SplitType('.hero_heading', { types: 'chars' })
+  heroTitle = new SplitType('.hero_heading-wrap', { types: 'chars' })
   splitText = new SplitType('[stagger-link]', {
     types: 'words, chars',
   })
-  heroSub = new SplitType('.hero_sub', {
+  heroSub = new SplitType('.hero_subtext', {
     types: 'words, chars',
   })
 
