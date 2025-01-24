@@ -296,3 +296,23 @@ imagewrappers.forEach((item) => {
     },
   })
 })
+
+//// Check if user prefers reduced motion
+const prefersReducedMotion = window.matchMedia(
+  '(prefers-reduced-motion: reduce)'
+).matches
+
+// Initialize Swiper with autoplay conditionally based on prefers-reduced-motion
+const swiper = new Swiper('.swiper-marquee', {
+  slidesPerView: 'auto',
+  spaceBetween: 120,
+  loop: true,
+  speed: 4000,
+  allowTouchMove: false,
+  autoplay: prefersReducedMotion
+    ? false
+    : {
+        delay: 1,
+        disableOnInteraction: false,
+      },
+})
