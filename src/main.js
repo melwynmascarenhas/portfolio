@@ -4,6 +4,32 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Flip } from 'gsap/Flip'
 import SplitType from 'split-type'
+import Swiper from 'swiper'
+
+import {
+  Navigation,
+  Pagination,
+  EffectFade,
+  Autoplay,
+  Thumbs,
+  Mousewheel,
+  Keyboard,
+  Parallax,
+} from 'swiper/modules'
+// import Swiper and modules styles
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+Swiper.use([
+  Navigation,
+  Pagination,
+  EffectFade,
+  Autoplay,
+  Thumbs,
+  Mousewheel,
+  Keyboard,
+  Parallax,
+])
 
 gsap.registerPlugin(ScrollTrigger, Flip)
 
